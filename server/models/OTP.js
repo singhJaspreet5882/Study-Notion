@@ -19,9 +19,21 @@ const OTPSchema = new mongoose.Schema({
 
 // Define a function to send emails
 async function sendVerificationEmail(email, otp) {
-	// Create a transporter to send emails
+	const transporter = nodemailer.createTransport({
+		service: "gmail",
+		auth: {
+			user: process.env.example.MAIL_USER, // Your email address
+			pass: process.env.example.MAIL_PASS, // Your email app password
+		},
+	});
 
 	// Define the email options
+	const mailOptions = {
+		from: process.env.MAIL_USER,
+		to: email,
+		subject: "Verification Email",
+		html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
+	};
 
 	// Send the email
 	try {
